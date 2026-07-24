@@ -41,6 +41,7 @@ const ProfileCardComponent = ({
 
   const enterTimerRef = useRef(null);
   const leaveRafRef = useRef(null);
+  const gyroIoRef = useRef(null);
 
   const tiltEngine = useMemo(() => {
     if (!enableTilt) return null;
@@ -215,6 +216,7 @@ const ProfileCardComponent = ({
       const { beta, gamma } = event;
       if (beta == null || gamma == null) return;
 
+      // beta: front-back tilt (−180…180), gamma: left-right (−90…90)
       const centerX = shell.clientWidth / 2;
       const centerY = shell.clientHeight / 2;
       const x = clamp(centerX + gamma * mobileTiltSensitivity, 0, shell.clientWidth);
@@ -224,6 +226,7 @@ const ProfileCardComponent = ({
         shell.clientHeight
       );
 
+      shell.classList.add('active');
       tiltEngine.setTarget(x, y);
     },
     [tiltEngine, mobileTiltSensitivity]
@@ -244,23 +247,75 @@ const ProfileCardComponent = ({
     shell.addEventListener('pointermove', pointerMoveHandler);
     shell.addEventListener('pointerleave', pointerLeaveHandler);
 
-    const handleClick = () => {
-      if (!enableMobileTilt || location.protocol !== 'https:') return;
-      const anyMotion = window.DeviceMotionEvent;
-      if (anyMotion && typeof anyMotion.requestPermission === 'function') {
-        anyMotion
-          .requestPermission()
-          .then(state => {
-            if (state === 'granted') {
-              window.addEventListener('deviceorientation', deviceOrientationHandler);
-            }
-          })
-          .catch(console.error);
-      } else {
-        window.addEventListener('deviceorientation', deviceOrientationHandler);
+    let gyroListening = false;
+    let permissionAsked = false;
+
+    const startGyro = () => {
+      if (gyroListening) return;
+      window.addEventListener('deviceorientation', deviceOrientationHandler, { passive: true });
+      gyroListening = true;
+      shell.classList.add('active');
+    };
+
+    const stopGyro = () => {
+      if (!gyroListening) return;
+      window.removeEventListener('deviceorientation', deviceOrientationHandler);
+      gyroListening = false;
+    };
+
+    const requestGyroPermission = async () => {
+      if (!enableMobileTilt || permissionAsked) return;
+      // Secure context required (GitHub Pages HTTPS is fine).
+      if (typeof window.isSecureContext === 'boolean' && !window.isSecureContext) return;
+
+      permissionAsked = true;
+      try {
+        const Orientation = window.DeviceOrientationEvent;
+        if (Orientation && typeof Orientation.requestPermission === 'function') {
+          // iOS Safari — must run from a user gesture.
+          const state = await Orientation.requestPermission();
+          if (state === 'granted') startGyro();
+        } else {
+          // Android / desktop with sensors — no prompt.
+          startGyro();
+        }
+      } catch {
+        permissionAsked = false;
       }
     };
-    shell.addEventListener('click', handleClick);
+
+    const onShellPointerDown = (e) => {
+      // Don't steal the WhatsApp / contact control.
+      if (e.target.closest('.pc-contact-btn')) return;
+      if (!enableMobileTilt) return;
+      // Only prompt on touch / coarse pointers (phones & tablets).
+      if (window.matchMedia('(pointer: fine)').matches) return;
+      requestGyroPermission();
+    };
+
+    if (enableMobileTilt) {
+      shell.addEventListener('pointerdown', onShellPointerDown);
+      // Android often allows orientation without a prompt — try when visible.
+      const io =
+        typeof IntersectionObserver !== 'undefined'
+          ? new IntersectionObserver(
+              ([entry]) => {
+                if (!entry.isIntersecting) {
+                  stopGyro();
+                  return;
+                }
+                // Auto-start where no iOS permission API exists.
+                const Orientation = window.DeviceOrientationEvent;
+                if (!Orientation || typeof Orientation.requestPermission !== 'function') {
+                  startGyro();
+                }
+              },
+              { threshold: 0.35 }
+            )
+          : null;
+      io?.observe(shell);
+      gyroIoRef.current = io;
+    }
 
     const initialX = (shell.clientWidth || 0) - ANIMATION_CONFIG.INITIAL_X_OFFSET;
     const initialY = ANIMATION_CONFIG.INITIAL_Y_OFFSET;
@@ -272,12 +327,14 @@ const ProfileCardComponent = ({
       shell.removeEventListener('pointerenter', pointerEnterHandler);
       shell.removeEventListener('pointermove', pointerMoveHandler);
       shell.removeEventListener('pointerleave', pointerLeaveHandler);
-      shell.removeEventListener('click', handleClick);
-      window.removeEventListener('deviceorientation', deviceOrientationHandler);
+      shell.removeEventListener('pointerdown', onShellPointerDown);
+      stopGyro();
+      gyroIoRef.current?.disconnect?.();
+      gyroIoRef.current = null;
       if (enterTimerRef.current) window.clearTimeout(enterTimerRef.current);
       if (leaveRafRef.current) cancelAnimationFrame(leaveRafRef.current);
       tiltEngine.cancel();
-      shell.classList.remove('entering');
+      shell.classList.remove('entering', 'active');
     };
   }, [
     enableTilt,
@@ -345,7 +402,10 @@ const ProfileCardComponent = ({
                   </div>
                   <button
                     className="pc-contact-btn"
-                    onClick={handleContactClick}
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      handleContactClick()
+                    }}
                     style={{ pointerEvents: 'auto' }}
                     type="button"
                     aria-label={`Contact ${name || 'user'}`}

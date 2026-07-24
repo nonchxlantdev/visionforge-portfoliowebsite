@@ -79,7 +79,8 @@ export default function About() {
                 contactText="WhatsApp Me"
                 showUserInfo={true}
                 enableTilt={true}
-                enableMobileTilt={false}
+                enableMobileTilt={true}
+                mobileTiltSensitivity={6.5}
                 behindGlowEnabled={true}
                 behindGlowColor="rgba(47,111,237,0.28)"
                 behindGlowSize="40%"
