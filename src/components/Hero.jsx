@@ -1,6 +1,7 @@
 import { useEffect, useRef, lazy, Suspense } from 'react'
 import { useGSAP } from '@gsap/react'
 import gsap from '../lib/gsap'
+import { whenBootDone } from '../lib/boot'
 import './Hero.css'
 
 const Ferrofluid = lazy(() => import('./Ferrofluid'))
@@ -57,18 +58,25 @@ export default function Hero() {
   useGSAP(
     () => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-      if (reduceMotion) {
-        gsap.set('.hero-in', { opacity: 1, y: 0 })
-        return
+
+      // Hold hero copy until the boot splash exits so the entrance plays in view.
+      gsap.set('.hero-in', { opacity: 0, y: reduceMotion ? 0 : 22 })
+
+      const play = () => {
+        if (reduceMotion) {
+          gsap.set('.hero-in', { opacity: 1, y: 0 })
+          return
+        }
+        gsap.to('.hero-in', {
+          opacity: 1,
+          y: 0,
+          duration: 0.7,
+          stagger: 0.09,
+          ease: 'power2.out',
+        })
       }
-      gsap.from('.hero-in', {
-        opacity: 0,
-        y: 22,
-        duration: 0.7,
-        stagger: 0.09,
-        ease: 'power2.out',
-        delay: 0.1,
-      })
+
+      return whenBootDone(play)
     },
     { scope: ref }
   )

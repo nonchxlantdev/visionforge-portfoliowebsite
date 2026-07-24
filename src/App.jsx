@@ -1,3 +1,4 @@
+import BootScreen from './components/BootScreen'
 import CardNav from './components/CardNav'
 import Hero from './components/Hero'
 import Services from './components/Services'
@@ -45,6 +46,7 @@ const NAV_ITEMS = [
 export default function App() {
   return (
     <>
+      <BootScreen />
       <ScrollProgress />
       <CardNav
         logoAlt="Vision Forge"

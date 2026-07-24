@@ -19,8 +19,125 @@
       href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=DM+Sans:wght@400;500&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
+
+    <!-- Critical first-paint boot (before JS). Mirrors BootScreen.css. -->
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #0a0e1a;
+        color: #e8ecf5;
+      }
+      body.is-booting {
+        overflow: hidden;
+      }
+      #vf-boot {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(ellipse 80% 60% at 50% 40%, #10162a 0%, #0a0e1a 70%),
+          #0a0e1a;
+      }
+      #vf-boot .vf-boot-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.75rem;
+        padding: 1.5rem;
+        text-align: center;
+      }
+      #vf-boot .vf-boot-mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      #vf-boot .vf-boot-hex {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+      }
+      #vf-boot .vf-boot-word {
+        font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 1.35rem;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      #vf-boot .vf-boot-word .accent {
+        color: #5b8bff;
+      }
+      #vf-boot .vf-boot-track {
+        width: min(220px, 56vw);
+        height: 2px;
+        background: #232c4a;
+        overflow: hidden;
+        border-radius: 1px;
+      }
+      #vf-boot .vf-boot-bar-fill {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, #2f6fed, #f5b700);
+        transform-origin: left center;
+        transform: scaleX(0.08);
+        animation: vf-boot-progress 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+      #vf-boot .vf-boot-status {
+        font-family: 'Space Mono', ui-monospace, monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #5a6382;
+      }
+      @keyframes vf-boot-progress {
+        0% {
+          transform: scaleX(0.08);
+        }
+        70% {
+          transform: scaleX(0.72);
+        }
+        100% {
+          transform: scaleX(0.88);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #vf-boot .vf-boot-bar-fill {
+          animation: none;
+          transform: scaleX(1);
+        }
+      }
+    </style>
   </head>
-  <body>
+  <body class="is-booting">
+    <div id="vf-boot" role="status" aria-live="polite" aria-busy="true" aria-label="Loading Vision Forge">
+      <div class="vf-boot-inner">
+        <div class="vf-boot-mark">
+          <svg class="vf-boot-hex" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <path
+              d="M20 2 36 11.4V28.6L20 38 4 28.6V11.4L20 2Z"
+              stroke="#5B8BFF"
+              stroke-width="2"
+            />
+            <path
+              d="M20 8 30 13.7V25.3L20 31 10 25.3V13.7L20 8Z"
+              stroke="#5A6382"
+              stroke-width="1"
+              opacity="0.5"
+            />
+            <path d="M22.5 12 15 22h6l-3.5 8L26 18h-6l2.5-6Z" fill="#F5B700" />
+          </svg>
+          <span class="vf-boot-word">VISION <span class="accent">FORGE</span></span>
+        </div>
+        <div class="vf-boot-track" aria-hidden="true">
+          <span class="vf-boot-bar-fill"></span>
+        </div>
+        <p class="vf-boot-status">Forging experience</p>
+      </div>
+    </div>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
