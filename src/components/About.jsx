@@ -73,7 +73,7 @@ export default function About() {
               <ProfileCard
                 avatarUrl={avatarPhoto}
                 name="Glenrick Spain"
-                title="Co-Owner & Senior Dev"
+                title="Co-Founder & Senior Dev"
                 handle="visionforge"
                 status="Available for projects"
                 contactText="WhatsApp Me"
