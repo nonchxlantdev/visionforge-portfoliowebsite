@@ -437,10 +437,19 @@
 @media (max-width: 768px) {
   .pc-card {
     height: auto;
-    width: min(100%, 340px);
+    width: 100%;
     max-height: none;
-    aspect-ratio: 0.72;
+    aspect-ratio: 3 / 4;
     max-width: 100%;
+  }
+
+  .pc-avatar-content {
+    mix-blend-mode: normal;
+  }
+
+  .pc-avatar-content .avatar {
+    opacity: 1;
+    will-change: auto;
   }
 
   .pc-details {
