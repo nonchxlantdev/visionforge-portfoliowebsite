@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+@theme {
+  /* ---- Blueprint Dark palette ---- */
+  --color-ink: #05070d;
+  --color-navy: #0a0e1a;
+  --color-navy-light: #10162a;
+  --color-surface: #131a2e;
+  --color-surface-2: #1a2340;
+  --color-line: #232c4a;
+
+  --color-blue: #2f6fed;
+  --color-blue-bright: #5b8bff;
+  --color-blue-dim: #17285c;
+
+  --color-yellow: #f5b700;
+  --color-yellow-bright: #ffd23f;
+  --color-yellow-dim: #4a3a08;
+
+  --color-paper: #f6f7fb;
+  --color-mist: #9aa4c2;
+  --color-mist-dim: #5a6382;
+
+  /* ---- Type ---- */
+  --font-display: "Space Grotesk", "Segoe UI", system-ui, sans-serif;
+  --font-body: "DM Sans", "Segoe UI", system-ui, sans-serif;
+
+  /* ---- Easing tokens (used via inline style / JS) ---- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--color-navy);
+    color: var(--color-paper);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+
+  /* Slim, on-brand scrollbar (progressive enhancement, WebKit only) */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-navy);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-line);
+    border-radius: 999px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-blue);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-yellow);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.001ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .container-vf {
+    width: 100%;
+    max-width: 1280px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .container-vf {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .glass {
+    background: color-mix(in srgb, var(--color-surface) 70%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid color-mix(in srgb, var(--color-line) 80%, transparent);
+  }
+
+  .grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  /* Services — 3-over-2 centered TiltedCard layout */
+  .services-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px 4px;
+  }
+
+  .services-grid > * {
+    flex: 1 1 300px;
+    max-width: 340px;
+  }
+
+  @media (max-width: 900px) {
+    .services-grid > * {
+      flex-basis: 45%;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .services-grid {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .services-grid > * {
+      max-width: none;
+    }
+  }
+}

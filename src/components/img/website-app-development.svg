@@ -1,0 +1,43 @@
+<svg width="480" height="380" viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#101A33"/>
+      <stop offset="100%" stop-color="#0A0E1A"/>
+    </linearGradient>
+    <pattern id="grid1" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#2F6FED" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="scrim1" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0E1A" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#0A0E1A" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#0B1122" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#0A0E1A" stop-opacity="0.94"/>
+      <stop offset="100%" stop-color="#0A0E1A" stop-opacity="0.98"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="380" fill="url(#bg1)"/>
+  <rect width="480" height="380" fill="url(#grid1)"/>
+
+  <!-- browser window -->
+  <rect x="70" y="70" width="260" height="180" rx="10" fill="#0B1122" stroke="#2F6FED" stroke-width="1.5"/>
+  <rect x="70" y="70" width="260" height="34" rx="10" fill="#10162A" stroke="#2F6FED" stroke-width="1.5"/>
+  <circle cx="90" cy="87" r="4" fill="#2F6FED" opacity="0.6"/>
+  <circle cx="104" cy="87" r="4" fill="#F5B700" opacity="0.8"/>
+  <circle cx="118" cy="87" r="4" fill="#2F6FED" opacity="0.6"/>
+  <rect x="90" y="128" width="150" height="10" rx="3" fill="#2F6FED" opacity="0.35"/>
+  <rect x="90" y="150" width="200" height="8" rx="3" fill="#2F6FED" opacity="0.2"/>
+  <rect x="90" y="166" width="120" height="8" rx="3" fill="#2F6FED" opacity="0.2"/>
+  <rect x="90" y="192" width="70" height="26" rx="6" fill="#F5B700" opacity="0.85"/>
+
+  <!-- phone / app -->
+  <rect x="270" y="150" width="120" height="200" rx="18" fill="#0B1122" stroke="#F5B700" stroke-width="1.5"/>
+  <rect x="282" y="170" width="96" height="150" rx="6" fill="#10162A"/>
+  <rect x="292" y="182" width="76" height="10" rx="3" fill="#F5B700" opacity="0.5"/>
+  <rect x="292" y="200" width="60" height="8" rx="3" fill="#2F6FED" opacity="0.3"/>
+  <rect x="292" y="216" width="76" height="34" rx="6" fill="#2F6FED" opacity="0.18"/>
+  <rect x="292" y="256" width="76" height="34" rx="6" fill="#2F6FED" opacity="0.18"/>
+  <circle cx="330" cy="335" r="6" fill="#F5B700" opacity="0.7"/>
+
+  <!-- baked-in bottom fade so overlay text always sits on a clean field -->
+  <rect x="0" y="130" width="480" height="250" fill="url(#scrim1)"/>
+</svg>

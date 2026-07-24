@@ -1,0 +1,26 @@
+.hero-code-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-code-pop {
+  position: absolute;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.65);
+  pointer-events: none;
+  user-select: none;
+  will-change: transform, opacity;
+}
+
+@media (min-width: 768px) {
+  .hero-code-pop {
+    font-size: 12.5px;
+  }
+}

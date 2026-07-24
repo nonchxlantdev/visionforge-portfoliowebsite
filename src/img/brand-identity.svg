@@ -1,0 +1,38 @@
+<svg width="480" height="380" viewBox="0 0 480 380" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg4" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#101A33"/>
+      <stop offset="100%" stop-color="#0A0E1A"/>
+    </linearGradient>
+    <pattern id="grid4" width="24" height="24" patternUnits="userSpaceOnUse">
+      <path d="M24 0H0V24" fill="none" stroke="#2F6FED" stroke-opacity="0.07" stroke-width="1"/>
+    </pattern>
+    <linearGradient id="scrim4" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0A0E1A" stop-opacity="0"/>
+      <stop offset="30%" stop-color="#0A0E1A" stop-opacity="0.1"/>
+      <stop offset="50%" stop-color="#0B1122" stop-opacity="0.7"/>
+      <stop offset="70%" stop-color="#0A0E1A" stop-opacity="0.94"/>
+      <stop offset="100%" stop-color="#0A0E1A" stop-opacity="0.98"/>
+    </linearGradient>
+  </defs>
+  <rect width="480" height="380" fill="url(#bg4)"/>
+  <rect width="480" height="380" fill="url(#grid4)"/>
+
+  <g transform="translate(0,-30) translate(240,150) scale(1.1) translate(-240,-150)">
+  <!-- brand hexagon mark, moved to upper field -->
+  <polygon points="240,45 305,83 305,159 240,197 175,159 175,83" fill="none" stroke="#2F6FED" stroke-width="2"/>
+  <path d="M240 93 L240 149 M212 121 L268 121" stroke="#F5B700" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- pen nib, contained in upper field -->
+  <path d="M120 120 L150 65 L170 85 L140 140 Z" fill="#0B1122" stroke="#2F6FED" stroke-width="1.5"/>
+  <path d="M150 65 L170 85" stroke="#F5B700" stroke-width="1.5"/>
+
+  <!-- color swatches, contained in upper field -->
+  <circle cx="360" cy="110" r="14" fill="#2F6FED" opacity="0.85"/>
+  <circle cx="388" cy="110" r="14" fill="#F5B700" opacity="0.85"/>
+  <circle cx="416" cy="110" r="14" fill="#E8ECF5" opacity="0.5"/>
+  </g>
+
+  <!-- baked-in bottom fade so overlay text always sits on a clean field -->
+  <rect x="0" y="130" width="480" height="250" fill="url(#scrim4)"/>
+</svg>
