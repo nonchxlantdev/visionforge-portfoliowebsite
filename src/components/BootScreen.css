@@ -49,22 +49,108 @@ body.is-booting {
   color: #5b8bff;
 }
 
-#vf-boot .vf-boot-track {
-  width: min(220px, 56vw);
-  height: 2px;
-  background: #232c4a;
+/* ── Walking stickman runway ── */
+#vf-boot .vf-boot-runway {
+  position: relative;
+  width: min(280px, 72vw);
+  height: 104px;
   overflow: hidden;
-  border-radius: 1px;
 }
 
-#vf-boot .vf-boot-bar-fill {
-  display: block;
+#vf-boot .vf-boot-ground {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: 8px;
+  height: 2px;
+  background: repeating-linear-gradient(
+    90deg,
+    #2f6fed 0 10px,
+    transparent 10px 20px
+  );
+  opacity: 0.85;
+  animation: vf-ground-scroll 0.9s linear infinite;
+}
+
+#vf-boot .vf-boot-stick {
+  position: absolute;
+  bottom: 8px;
+  left: 50%;
+  width: 72px;
+  height: 92px;
+  margin-left: -36px;
+}
+
+#vf-boot .vf-boot-stick svg {
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, #2f6fed, #f5b700);
-  transform-origin: left center;
-  transform: scaleX(0.08);
-  animation: vf-boot-progress 1.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  overflow: visible;
+  display: block;
+}
+
+/*
+  Joint groups use local coords (0,0 = pivot).
+  Nested wrappers use SVG translate attributes (not CSS) so CSS rotate
+  doesn't clobber joint placement.
+*/
+#vf-boot .vf-figure {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: vf-walk-bob 0.9s ease-in-out infinite;
+}
+
+#vf-boot .vf-torso {
+  transform-box: fill-box;
+  transform-origin: 0 0;
+  animation: vf-torso-sway 0.9s ease-in-out infinite;
+}
+
+#vf-boot .vf-hip-back,
+#vf-boot .vf-hip-front,
+#vf-boot .vf-knee-back,
+#vf-boot .vf-knee-front,
+#vf-boot .vf-shoulder-back,
+#vf-boot .vf-shoulder-front,
+#vf-boot .vf-elbow-back,
+#vf-boot .vf-elbow-front {
+  transform-box: fill-box;
+  transform-origin: 0 0;
+}
+
+#vf-boot .vf-hip-back {
+  animation: vf-thigh 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+#vf-boot .vf-hip-front {
+  animation: vf-thigh 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  animation-delay: -0.45s;
+}
+
+#vf-boot .vf-knee-back {
+  animation: vf-shin 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+#vf-boot .vf-knee-front {
+  animation: vf-shin 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  animation-delay: -0.45s;
+}
+
+#vf-boot .vf-shoulder-back {
+  animation: vf-upper-arm 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  animation-delay: -0.45s;
+}
+
+#vf-boot .vf-shoulder-front {
+  animation: vf-upper-arm 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+}
+
+#vf-boot .vf-elbow-back {
+  animation: vf-forearm 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+  animation-delay: -0.45s;
+}
+
+#vf-boot .vf-elbow-front {
+  animation: vf-forearm 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
 }
 
 #vf-boot .vf-boot-status {
@@ -75,21 +161,131 @@ body.is-booting {
   color: #5a6382;
 }
 
-@keyframes vf-boot-progress {
-  0% {
-    transform: scaleX(0.08);
+@keyframes vf-ground-scroll {
+  from {
+    transform: translateX(0);
   }
-  70% {
-    transform: scaleX(0.72);
+  to {
+    transform: translateX(-20px);
+  }
+}
+
+@keyframes vf-walk-bob {
+  0%,
+  50%,
+  100% {
+    transform: translateY(0);
+  }
+  25%,
+  75% {
+    transform: translateY(-2.5px);
+  }
+}
+
+@keyframes vf-torso-sway {
+  0%,
+  100% {
+    transform: rotate(-2deg);
+  }
+  50% {
+    transform: rotate(2deg);
+  }
+}
+
+/* Plant forward (right) → push back → flexed swing through */
+@keyframes vf-thigh {
+  0% {
+    transform: rotate(-24deg);
+  }
+  18% {
+    transform: rotate(-10deg);
+  }
+  38% {
+    transform: rotate(6deg);
+  }
+  52% {
+    transform: rotate(22deg);
+  }
+  68% {
+    transform: rotate(4deg);
+  }
+  84% {
+    transform: rotate(-16deg);
   }
   100% {
-    transform: scaleX(0.88);
+    transform: rotate(-24deg);
+  }
+}
+
+/* Shin nearly straight on plant; strong flex mid-swing */
+@keyframes vf-shin {
+  0% {
+    transform: rotate(-4deg);
+  }
+  16% {
+    transform: rotate(-2deg);
+  }
+  38% {
+    transform: rotate(8deg);
+  }
+  52% {
+    transform: rotate(14deg);
+  }
+  68% {
+    transform: rotate(52deg);
+  }
+  84% {
+    transform: rotate(26deg);
+  }
+  100% {
+    transform: rotate(-4deg);
+  }
+}
+
+/* Opposite phase to same-side leg; calm walking arc (arm back when leg forward) */
+@keyframes vf-upper-arm {
+  0% {
+    transform: rotate(20deg);
+  }
+  25% {
+    transform: rotate(8deg);
+  }
+  50% {
+    transform: rotate(-22deg);
+  }
+  75% {
+    transform: rotate(-6deg);
+  }
+  100% {
+    transform: rotate(20deg);
+  }
+}
+
+/* Soft elbow bend throughout */
+@keyframes vf-forearm {
+  0% {
+    transform: rotate(-28deg);
+  }
+  50% {
+    transform: rotate(-18deg);
+  }
+  100% {
+    transform: rotate(-28deg);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  #vf-boot .vf-boot-bar-fill {
+  #vf-boot .vf-boot-ground,
+  #vf-boot .vf-figure,
+  #vf-boot .vf-torso,
+  #vf-boot .vf-hip-back,
+  #vf-boot .vf-hip-front,
+  #vf-boot .vf-knee-back,
+  #vf-boot .vf-knee-front,
+  #vf-boot .vf-shoulder-back,
+  #vf-boot .vf-shoulder-front,
+  #vf-boot .vf-elbow-back,
+  #vf-boot .vf-elbow-front {
     animation: none;
-    transform: scaleX(1);
   }
 }

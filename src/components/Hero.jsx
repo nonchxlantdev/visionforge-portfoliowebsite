@@ -174,7 +174,7 @@ export default function Hero() {
     <section
       id="home"
       ref={ref}
-      className="relative overflow-hidden pt-36 pb-24 md:pt-44 md:pb-32"
+      className="hero-section relative overflow-hidden"
       onClick={spawnCodePops}
     >
       <div className="absolute inset-0 z-0" aria-hidden="true">
@@ -209,34 +209,16 @@ export default function Hero() {
             Powering Your Vision
           </p>
 
-          <h1 className="hero-in text-balance mt-6 font-display text-4xl font-semibold leading-[1.08] text-paper sm:text-5xl lg:text-[3.4rem]">
+          <h1 className="hero-in text-balance mt-5 font-display text-4xl font-semibold leading-[1.08] text-paper sm:text-[2.65rem] lg:text-[3.1rem]">
             Building digital experiences that <span className="text-blue-bright">drive results.</span>
           </h1>
 
-          <p className="hero-in mt-6 max-w-lg text-lg leading-relaxed text-mist">
+          <p className="hero-in hero-lead mt-5 max-w-lg text-mist">
             Vision Forge designs and builds custom websites, apps, software and AI-powered
             tools that elevate your brand and grow your business, end to end.
           </p>
 
-          <div className="hero-in mt-10 flex flex-wrap items-center gap-4">
-            <a
-              href="#contact"
-              className="pointer-events-auto group inline-flex items-center gap-2 rounded-full bg-yellow px-7 py-3.5 text-sm font-bold tracking-wide text-ink transition-all hover:bg-yellow-bright hover:-translate-y-0.5 hover:shadow-[0_8px_30px_-6px_var(--color-yellow)]"
-            >
-              Let's Build
-              <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
-                →
-              </span>
-            </a>
-            <a
-              href="#services"
-              className="pointer-events-auto inline-flex items-center gap-2 rounded-full border border-line px-7 py-3.5 text-sm font-semibold text-paper transition-colors hover:border-blue-bright"
-            >
-              See Our Services
-            </a>
-          </div>
-
-          <div className="hero-in mt-14 flex flex-wrap gap-x-10 gap-y-3 text-xs font-semibold uppercase tracking-widest text-mist-dim">
+          <div className="hero-in mt-9 flex flex-wrap gap-x-8 gap-y-2 text-xs font-semibold uppercase tracking-widest text-mist-dim">
             <span>Smart</span>
             <span className="text-line">•</span>
             <span>Reliable</span>

@@ -24,3 +24,34 @@
     font-size: 12.5px;
   }
 }
+
+/* Hero — clears fixed nav; mid-size (not full viewport) */
+.hero-section {
+  padding-top: calc(6.25rem + env(safe-area-inset-top, 0px));
+  padding-bottom: 3.5rem;
+}
+
+@media (min-width: 640px) {
+  .hero-section {
+    padding-top: calc(6.75rem + env(safe-area-inset-top, 0px));
+    padding-bottom: 4rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .hero-section {
+    padding-top: calc(7.75rem + env(safe-area-inset-top, 0px));
+    padding-bottom: 4.75rem;
+  }
+}
+
+.hero-lead {
+  font-size: 1rem;
+  line-height: 1.65;
+}
+
+@media (min-width: 640px) {
+  .hero-lead {
+    font-size: 1.125rem;
+  }
+}

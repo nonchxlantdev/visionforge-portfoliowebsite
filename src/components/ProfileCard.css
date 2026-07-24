@@ -34,7 +34,14 @@
   perspective: 500px;
   transform: translate3d(0, 0, 0.1px);
   position: relative;
-  touch-action: none;
+  /* Allow vertical page scroll on touch; lock only on fine pointers */
+  touch-action: pan-y;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .pc-card-wrapper {
+    touch-action: none;
+  }
 }
 
 .pc-behind {
@@ -429,8 +436,11 @@
 
 @media (max-width: 768px) {
   .pc-card {
-    height: 70svh;
-    max-height: 450px;
+    height: auto;
+    width: min(100%, 340px);
+    max-height: none;
+    aspect-ratio: 0.72;
+    max-width: 100%;
   }
 
   .pc-details {
@@ -438,25 +448,29 @@
   }
 
   .pc-details h3 {
-    font-size: min(4svh, 2.5em);
+    font-size: clamp(1.35rem, 5vw, 2.1em);
   }
 
   .pc-details p {
     font-size: 14px;
+    white-space: normal;
+    max-width: 90%;
   }
 
   .pc-user-info {
-    --ui-inset: 15px;
+    --ui-inset: 12px;
     padding: 10px 12px;
+    gap: 8px;
   }
 
   .pc-mini-avatar {
-    width: 28px;
-    height: 28px;
+    width: 36px;
+    height: 36px;
   }
 
   .pc-user-details {
     gap: 10px;
+    min-width: 0;
   }
 
   .pc-handle {
@@ -464,19 +478,21 @@
   }
 
   .pc-status {
-    font-size: 10px;
+    font-size: 11px;
   }
 
   .pc-contact-btn {
-    padding: 6px 12px;
-    font-size: 11px;
+    min-height: 44px;
+    min-width: 44px;
+    padding: 10px 14px;
+    font-size: 12px;
+    touch-action: manipulation;
   }
 }
 
 @media (max-width: 480px) {
   .pc-card {
-    height: 60svh;
-    max-height: 380px;
+    width: min(100%, 320px);
   }
 
   .pc-details {
@@ -484,26 +500,22 @@
   }
 
   .pc-details h3 {
-    font-size: min(3.5svh, 2em);
+    font-size: clamp(1.25rem, 6vw, 1.85em);
   }
 
   .pc-details p {
-    font-size: 12px;
+    font-size: 13px;
     top: -8px;
   }
 
   .pc-user-info {
-    --ui-inset: 12px;
+    --ui-inset: 10px;
     padding: 8px 10px;
   }
 
   .pc-mini-avatar {
-    width: 24px;
-    height: 24px;
-  }
-
-  .pc-user-details {
-    gap: 8px;
+    width: 32px;
+    height: 32px;
   }
 
   .pc-handle {
@@ -511,54 +523,32 @@
   }
 
   .pc-status {
-    font-size: 9px;
+    font-size: 10px;
   }
 
   .pc-contact-btn {
-    padding: 5px 10px;
-    font-size: 10px;
-    border-radius: 50px;
+    min-height: 44px;
+    padding: 10px 12px;
+    font-size: 11px;
+    border-radius: 10px;
   }
 }
 
 @media (max-width: 320px) {
   .pc-card {
-    height: 55svh;
-    max-height: 320px;
+    width: 100%;
   }
 
   .pc-details h3 {
-    font-size: min(3svh, 1.5em);
+    font-size: 1.2rem;
   }
 
   .pc-details p {
-    font-size: 11px;
-  }
-
-  .pc-user-info {
-    padding: 6px 8px;
-  }
-
-  .pc-mini-avatar {
-    width: 20px;
-    height: 20px;
-  }
-
-  .pc-user-details {
-    gap: 6px;
-  }
-
-  .pc-handle {
-    font-size: 11px;
-  }
-
-  .pc-status {
-    font-size: 8px;
+    font-size: 12px;
   }
 
   .pc-contact-btn {
-    padding: 4px 8px;
-    font-size: 9px;
-    border-radius: 50px;
+    padding: 10px 12px;
+    font-size: 11px;
   }
 }

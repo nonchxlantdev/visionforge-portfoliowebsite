@@ -45,8 +45,6 @@ export default function BootScreen() {
       }
 
       boot.setAttribute('aria-busy', 'false')
-      const bar = boot.querySelector('.vf-boot-bar-fill')
-      if (bar) bar.style.transform = 'scaleX(1)'
 
       if (reduceMotion) {
         boot.remove()

@@ -1,10 +1,16 @@
 .section-divider {
   position: relative;
-  height: 88px;
+  height: 64px;
   background: #0d1428;
   border-top: 1px solid rgba(47, 111, 237, 0.18);
   border-bottom: 1px solid rgba(47, 111, 237, 0.18);
   overflow: hidden;
+}
+
+@media (min-width: 768px) {
+  .section-divider {
+    height: 88px;
+  }
 }
 
 .sd-grid {
@@ -86,11 +92,11 @@
 }
 
 .sd-label-left {
-  left: 24px;
+  left: max(12px, env(safe-area-inset-left, 0px));
 }
 
 .sd-label-right {
-  right: 24px;
+  right: max(12px, env(safe-area-inset-right, 0px));
 }
 
 .sd-label-right::before {
@@ -111,10 +117,25 @@
 
 @media (max-width: 700px) {
   .sd-label {
-    font-size: 9.5px;
+    font-size: 9px;
+    letter-spacing: 0.5px;
   }
 
   .sd-hex {
+    display: none;
+  }
+
+  .sd-label-left {
+    left: 10px;
+  }
+
+  .sd-label-right {
+    right: 10px;
+  }
+}
+
+@media (max-width: 380px) {
+  .sd-label {
     display: none;
   }
 }

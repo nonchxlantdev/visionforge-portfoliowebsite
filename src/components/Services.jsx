@@ -46,7 +46,7 @@ const services = [
 
 export default function Services() {
   return (
-    <section id="services" className="relative overflow-visible py-24 md:py-32">
+    <section id="services" className="relative overflow-visible py-16 sm:py-20 md:py-28 lg:py-32">
       <div className="container-vf overflow-visible">
         <Reveal className="max-w-2xl">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-yellow">Our Services</p>
@@ -66,8 +66,8 @@ export default function Services() {
               key={s.tag}
               imageSrc={s.img}
               altText={s.title}
-              containerHeight="380px"
-              imageHeight="380px"
+              containerHeight="var(--svc-card-h, 380px)"
+              imageHeight="var(--svc-card-h, 380px)"
               imageWidth="100%"
               rotateAmplitude={10}
               scaleOnHover={1.04}
@@ -75,40 +75,10 @@ export default function Services() {
               showTooltip={false}
               displayOverlayContent={true}
               overlayContent={
-                <div>
-                  <span
-                    style={{
-                      color: '#F5B700',
-                      fontSize: 11,
-                      fontWeight: 700,
-                      letterSpacing: '1.5px',
-                    }}
-                  >
-                    {s.tag}
-                  </span>
-                  <h3
-                    style={{
-                      fontFamily: 'Space Grotesk, sans-serif',
-                      fontSize: 22,
-                      fontWeight: 700,
-                      color: '#F4F7FF',
-                      margin: '6px 0 8px',
-                      textShadow: '0 2px 12px rgba(0, 0, 0, 0.6)',
-                    }}
-                  >
-                    {s.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontFamily: 'DM Sans, sans-serif',
-                      fontSize: 14,
-                      lineHeight: 1.55,
-                      color: '#D7DCEB',
-                      margin: 0,
-                    }}
-                  >
-                    {s.description}
-                  </p>
+                <div className="service-card-copy">
+                  <span className="service-card-tag">{s.tag}</span>
+                  <h3 className="service-card-title">{s.title}</h3>
+                  <p className="service-card-desc">{s.description}</p>
                 </div>
               }
             />

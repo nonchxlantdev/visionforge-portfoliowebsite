@@ -220,6 +220,7 @@
   width: 100%;
   margin-top: 1.35rem;
   padding: 0.95rem 1.25rem;
+  min-height: 52px;
   border: none;
   border-radius: 999px;
   background: linear-gradient(135deg, #ffd866 0%, #f5b700 55%, #e0a400 100%);
@@ -230,6 +231,8 @@
   letter-spacing: 0.06em;
   text-decoration: none;
   cursor: pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.45),
     inset 0 -2px 4px rgba(150, 100, 0, 0.25),
@@ -344,4 +347,39 @@
   text-align: center;
   font-size: 0.75rem;
   color: #5a6382;
+}
+
+@media (max-width: 640px) {
+  .cc-layout {
+    gap: 2.25rem;
+  }
+
+  .cc-panel {
+    padding: 1.25rem 1.15rem 1.2rem;
+  }
+
+  .cc-panel-top {
+    flex-wrap: wrap;
+    gap: 0.65rem;
+  }
+
+  .cc-terminal {
+    font-size: 11px;
+    overflow-wrap: anywhere;
+  }
+
+  .cc-signal-row {
+    flex-wrap: wrap;
+  }
+
+  .cc-connect {
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+  }
+}
+
+@media (min-width: 641px) and (max-width: 899px) {
+  .cc-layout {
+    gap: 2.75rem;
+  }
 }
