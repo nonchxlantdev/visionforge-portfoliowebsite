@@ -22,38 +22,57 @@ const CardNav = ({
 
   const calculateHeight = () => {
     const navEl = navRef.current
-    if (!navEl) return 260
+    if (!navEl) return 280
+
+    const contentEl = navEl.querySelector('.card-nav-content')
+    if (!contentEl) return NAV_TOP + 220
 
     const isMobile = window.matchMedia('(max-width: 768px)').matches
+    const wasVisible = contentEl.style.visibility
+    const wasPointerEvents = contentEl.style.pointerEvents
+    const wasPosition = contentEl.style.position
+    const wasHeight = contentEl.style.height
+    const wasOverflow = contentEl.style.overflow
+
+    // Temporarily unwrap absolute layout so scrollHeight reflects real content.
+    contentEl.style.visibility = 'visible'
+    contentEl.style.pointerEvents = 'auto'
+    contentEl.style.position = 'static'
+    contentEl.style.height = 'auto'
+    contentEl.style.overflow = 'visible'
+
+    const cards = Array.from(contentEl.querySelectorAll('.nav-card'))
+    const cardHeightResets = cards.map((card) => {
+      const prev = card.style.height
+      card.style.height = 'auto'
+      return prev
+    })
+
+    void contentEl.offsetHeight
+
+    const topBar = NAV_TOP
+    const contentPad = 16 // matches .card-nav-content padding (0.5rem * 2)
+    let measured
+
     if (isMobile) {
-      const contentEl = navEl.querySelector('.card-nav-content')
-      if (contentEl) {
-        const wasVisible = contentEl.style.visibility
-        const wasPointerEvents = contentEl.style.pointerEvents
-        const wasPosition = contentEl.style.position
-        const wasHeight = contentEl.style.height
-
-        contentEl.style.visibility = 'visible'
-        contentEl.style.pointerEvents = 'auto'
-        contentEl.style.position = 'static'
-        contentEl.style.height = 'auto'
-
-        // Force layout so scrollHeight is accurate after temporarily unhiding.
-        void contentEl.offsetHeight
-
-        const topBar = NAV_TOP
-        const padding = 16
-        const contentHeight = contentEl.scrollHeight
-
-        contentEl.style.visibility = wasVisible
-        contentEl.style.pointerEvents = wasPointerEvents
-        contentEl.style.position = wasPosition
-        contentEl.style.height = wasHeight
-
-        return topBar + contentHeight + padding
-      }
+      measured = topBar + contentEl.scrollHeight + contentPad
+    } else {
+      // Horizontal cards: size to the tallest card (Services has 3 links).
+      const tallest = cards.reduce((max, card) => Math.max(max, card.scrollHeight), 0)
+      measured = topBar + tallest + contentPad
     }
-    return NAV_TOP + 200
+
+    cards.forEach((card, i) => {
+      card.style.height = cardHeightResets[i]
+    })
+    contentEl.style.visibility = wasVisible
+    contentEl.style.pointerEvents = wasPointerEvents
+    contentEl.style.position = wasPosition
+    contentEl.style.height = wasHeight
+    contentEl.style.overflow = wasOverflow
+
+    // Small buffer so the last link never kisses/clips the border (iPad Safari).
+    return measured + 8
   }
 
   const createTimeline = () => {
