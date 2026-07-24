@@ -75,6 +75,20 @@
   font-size: min(4svh, 2.3em);
 }
 
+@media (max-width: 768px) {
+  .profile-stage .pc-details {
+    top: 1.25em;
+  }
+
+  .profile-stage .pc-details h3 {
+    font-size: clamp(1.3rem, 5.5vw, 1.9em);
+  }
+
+  .profile-stage .pc-details p {
+    font-size: clamp(0.6rem, 2.55vw, 0.7rem);
+  }
+}
+
 .profile-stage .pc-content:not(.pc-avatar-content) {
   mix-blend-mode: normal;
 }

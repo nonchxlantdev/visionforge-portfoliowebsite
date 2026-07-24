@@ -453,17 +453,25 @@
   }
 
   .pc-details {
-    top: 2em;
+    top: 1.35em;
+    align-items: center;
+    gap: 0.2em;
   }
 
   .pc-details h3 {
+    order: 2;
     font-size: clamp(1.35rem, 5vw, 2.1em);
   }
 
   .pc-details p {
-    font-size: 14px;
-    white-space: normal;
-    max-width: 90%;
+    order: 1;
+    top: 0;
+    font-size: clamp(0.62rem, 2.6vw, 0.72rem);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
+    width: auto;
+    max-width: 100%;
+    line-height: 1.2;
   }
 
   .pc-user-info {
@@ -505,7 +513,7 @@
   }
 
   .pc-details {
-    top: 1.5em;
+    top: 1.15em;
   }
 
   .pc-details h3 {
@@ -513,8 +521,9 @@
   }
 
   .pc-details p {
-    font-size: 13px;
-    top: -8px;
+    font-size: clamp(0.58rem, 2.5vw, 0.68rem);
+    top: 0;
+    white-space: nowrap;
   }
 
   .pc-user-info {
@@ -553,7 +562,8 @@
   }
 
   .pc-details p {
-    font-size: 12px;
+    font-size: 0.55rem;
+    white-space: nowrap;
   }
 
   .pc-contact-btn {
