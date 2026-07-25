@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import './Footer.css'
 
 export default function Footer() {
@@ -31,11 +32,12 @@ export default function Footer() {
             </div>
             <svg
               className="brand-stickman"
-              width="140"
-              height="135"
-              viewBox="0 0 140 135"
+              width="160"
+              height="145"
+              viewBox="0 0 160 145"
               aria-hidden="true"
             >
+              {/* Sign */}
               <rect
                 x="15"
                 y="6"
@@ -57,6 +59,8 @@ export default function Footer() {
                 <tspan fill="#E8ECF5">YOUR </tspan>
                 <tspan fill="#2F6FED">VISION</tspan>
               </text>
+
+              {/* Stickman body */}
               <g stroke="#2F6FED" strokeWidth="2.5" strokeLinecap="round" fill="none">
                 <path d="M70 74 L32 52" />
                 <path d="M70 74 L108 52" />
@@ -77,16 +81,19 @@ export default function Footer() {
             <div className="col-kicker">NAVIGATE</div>
             <ul className="footer-links">
               <li>
-                <a href="#home">Home</a>
+                <Link to="/#home">Home</Link>
               </li>
               <li>
-                <a href="#about">About</a>
+                <Link to="/#about">About</Link>
               </li>
               <li>
-                <a href="#services">Services</a>
+                <Link to="/#services">Services</Link>
               </li>
               <li>
-                <a href="#contact">Contact</a>
+                <Link to="/pricing">Pricing</Link>
+              </li>
+              <li>
+                <Link to="/#contact">Contact</Link>
               </li>
             </ul>
           </div>

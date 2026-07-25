@@ -1,12 +1,10 @@
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import BootScreen from './components/BootScreen'
 import CardNav from './components/CardNav'
-import Hero from './components/Hero'
-import Services from './components/Services'
-import About from './components/About'
-import ConsultationConsole from './components/ConsultationConsole'
 import Footer from './components/Footer'
 import ScrollProgress from './components/ScrollProgress'
-import SectionDivider from './components/SectionDivider'
+import HomePage from './pages/HomePage'
+import PricingPage from './pages/PricingPage'
 
 const NAV_ITEMS = [
   {
@@ -17,17 +15,20 @@ const NAV_ITEMS = [
       {
         label: 'Website & App Development',
         ariaLabel: 'Website and App Development',
-        href: '#services',
+        href: '/#services',
       },
-      { label: 'Custom Software', ariaLabel: 'Custom Software', href: '#services' },
-      { label: 'AI Solutions', ariaLabel: 'AI Solutions', href: '#services' },
+      { label: 'Custom Software', ariaLabel: 'Custom Software', href: '/#services' },
+      { label: 'AI Solutions', ariaLabel: 'AI Solutions', href: '/#services' },
     ],
   },
   {
     label: 'About',
     bgColor: '#131B33',
     textColor: '#E8ECF5',
-    links: [{ label: 'Our Mission', ariaLabel: 'Our Mission', href: '#about' }],
+    links: [
+      { label: 'Our Mission', ariaLabel: 'Our Mission', href: '/#about' },
+      { label: 'Pricing', ariaLabel: 'Build Your Package', href: '/pricing' },
+    ],
   },
   {
     label: 'Contact',
@@ -39,13 +40,14 @@ const NAV_ITEMS = [
         ariaLabel: 'WhatsApp us',
         href: 'https://wa.me/5016157575',
       },
+      { label: 'Build Your Package', ariaLabel: 'Build Your Package', href: '/pricing' },
     ],
   },
 ]
 
 export default function App() {
   return (
-    <>
+    <BrowserRouter basename={import.meta.env.BASE_URL}>
       <BootScreen />
       <ScrollProgress />
       <CardNav
@@ -55,16 +57,11 @@ export default function App() {
         ease="power3.out"
         items={NAV_ITEMS}
       />
-      <main>
-        <Hero />
-        <SectionDivider fromLabel="home" toLabel="services" />
-        <Services />
-        <SectionDivider fromLabel="services" toLabel="about" flip />
-        <About />
-        <SectionDivider fromLabel="about" toLabel="contact" />
-        <ConsultationConsole />
-      </main>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/pricing" element={<PricingPage />} />
+      </Routes>
       <Footer />
-    </>
+    </BrowserRouter>
   )
 }

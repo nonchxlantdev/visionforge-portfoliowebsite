@@ -1,8 +1,32 @@
 import { useLayoutEffect, useRef, useState } from 'react'
+import { Link } from 'react-router-dom'
 import gsap from '../lib/gsap'
 import { GoArrowUpRight } from 'react-icons/go'
 import { Wordmark } from './Logo'
 import './CardNav.css'
+
+function NavHref({ href, className, ariaLabel, children, onNavigate }) {
+  const external = href?.startsWith('http')
+  if (external) {
+    return (
+      <a
+        className={className}
+        href={href}
+        aria-label={ariaLabel}
+        target="_blank"
+        rel="noopener noreferrer"
+        onClick={onNavigate}
+      >
+        {children}
+      </a>
+    )
+  }
+  return (
+    <Link className={className} to={href || '/'} aria-label={ariaLabel} onClick={onNavigate}>
+      {children}
+    </Link>
+  )
+}
 
 const NAV_TOP = 56
 
@@ -189,14 +213,14 @@ const CardNav = ({
           </div>
 
           <div className="logo-container">
-            <a href="#home" aria-label={logoAlt}>
+            <Link to="/" aria-label={logoAlt} onClick={collapseMenu}>
               <Wordmark className="card-nav-wordmark" />
-            </a>
+            </Link>
           </div>
 
-          <a href="#contact" className="card-nav-cta-button">
+          <Link to="/#contact" className="card-nav-cta-button" onClick={collapseMenu}>
             Let's Build <span className="cta-code">&lt;/&gt;</span>
-          </a>
+          </Link>
         </div>
 
         <div className="card-nav-content" aria-hidden={!isExpanded}>
@@ -210,18 +234,16 @@ const CardNav = ({
               <div className="nav-card-label">{item.label}</div>
               <div className="nav-card-links">
                 {item.links?.map((lnk, i) => (
-                  <a
+                  <NavHref
                     key={`${lnk.label}-${i}`}
                     className="nav-card-link"
                     href={lnk.href}
-                    aria-label={lnk.ariaLabel}
-                    {...(lnk.href?.startsWith('http')
-                      ? { target: '_blank', rel: 'noopener noreferrer' }
-                      : {})}
+                    ariaLabel={lnk.ariaLabel}
+                    onNavigate={collapseMenu}
                   >
                     <GoArrowUpRight className="nav-card-link-icon" aria-hidden="true" />
                     {lnk.label}
-                  </a>
+                  </NavHref>
                 ))}
               </div>
             </div>

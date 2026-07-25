@@ -42,10 +42,11 @@
 }
 
 .brand-stickman {
-  width: 140px;
+  width: 160px;
   height: auto;
   flex: none;
   align-self: center;
+  overflow: visible;
 }
 
 .brand-col .logo {
