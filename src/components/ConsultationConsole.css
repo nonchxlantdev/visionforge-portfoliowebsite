@@ -261,6 +261,44 @@
   outline-offset: 3px;
 }
 
+.cc-secondary-link {
+  display: block;
+  margin-top: 0.75rem;
+  text-align: center;
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  color: var(--color-mist);
+  text-decoration: none;
+}
+
+.cc-secondary-link:hover {
+  color: var(--color-paper);
+}
+
+.cc-secondary-link-accent {
+  color: var(--color-blue-bright);
+  font-weight: 600;
+}
+
+.cc-package-note {
+  margin: 1.35rem 0 0;
+  max-width: 34rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+  color: var(--color-mist);
+}
+
+.cc-package-note-link {
+  color: var(--color-blue-bright);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.cc-package-note-link:hover {
+  color: var(--color-paper);
+}
+
 @keyframes cc-breathe {
   0%,
   100% {

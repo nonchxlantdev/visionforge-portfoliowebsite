@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import Reveal from './Reveal'
 import './ConsultationConsole.css'
 
@@ -56,6 +57,14 @@ export default function ConsultationConsole() {
                 </li>
               ))}
             </ul>
+
+            <p className="cc-package-note">
+              Want a price before you reach out?{' '}
+              <Link to="/pricing" className="cc-package-note-link">
+                Use the package builder
+              </Link>
+              .
+            </p>
           </div>
 
           <div className="cc-panel">
@@ -92,6 +101,11 @@ export default function ConsultationConsole() {
             >
               ▶ CONNECT ON WHATSAPP
             </a>
+
+            <Link to="/pricing" className="cc-secondary-link">
+              Not sure what you need?{' '}
+              <span className="cc-secondary-link-accent">Build your package</span> →
+            </Link>
 
             <div className="cc-signal-row">
               <span className="cc-signal-label">SIGNAL: +501 615 7575</span>
