@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { Renderer, Program, Mesh, Triangle } from 'ogl';
+import { ScrollTrigger } from '../lib/gsap';
 import './Ferrofluid.css';
 
 const MAX_COLORS = 8;
@@ -370,6 +371,7 @@ const Ferrofluid = ({
     };
 
     resize();
+    requestAnimationFrame(() => ScrollTrigger.refresh());
     const ro = new ResizeObserver(resize);
     ro.observe(container);
 
@@ -476,6 +478,13 @@ const Ferrofluid = ({
     mouseRadius,
     mouseDampening
   ]);
+
+  // Lazy chunk mounts after boot-time ScrollTrigger.refresh() — refresh again
+  // once this canvas is in the tree so trigger positions match final layout.
+  useEffect(() => {
+    const id = requestAnimationFrame(() => ScrollTrigger.refresh())
+    return () => cancelAnimationFrame(id)
+  }, [])
 
   return (
     <div

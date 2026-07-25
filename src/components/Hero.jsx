@@ -177,7 +177,7 @@ export default function Hero() {
       className="hero-section relative overflow-hidden"
       onClick={spawnCodePops}
     >
-      <div className="absolute inset-0 z-0" aria-hidden="true">
+      <div className="hero-ferro" aria-hidden="true">
         <Suspense fallback={null}>
           <Ferrofluid
             colors={FERRO_COLORS}
