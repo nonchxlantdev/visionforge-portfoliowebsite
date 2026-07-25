@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vision Forge</title>
+    <script>
+      // GitHub Pages SPA redirect: send unknown paths back to index.html
+      // while preserving the path for react-router (BrowserRouter).
+      ;(function () {
+        var path = location.pathname
+        var base = '/visionforge-portfoliowebsite/'
+        var redirect = base + '?/' + path.slice(base.length).replace(/&/g, '~and~') + location.search.replace(/&/g, '~and~') + location.hash
+        location.replace(redirect)
+      })()
+    </script>
+  </head>
+  <body></body>
+</html>

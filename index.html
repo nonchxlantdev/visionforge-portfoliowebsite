@@ -1,0 +1,489 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/visionforge-portfoliowebsite/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta
+      name="description"
+      content="Vision Forge: we build modern websites, apps, custom software, AI solutions and brands that drive real business results."
+    />
+    <meta name="theme-color" content="#0A0E1A" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="color-scheme" content="dark" />
+    <title>Vision Forge: Building Digital Experiences That Drive Results</title>
+    <script>
+      // Recover path after GitHub Pages 404.html SPA redirect (?/pricing → /pricing)
+      ;(function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&')
+            })
+            .join('?')
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash)
+        }
+      })(window.location)
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <!-- Preload hero display face early so H1 metrics settle before boot exits -->
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@600;700&display=swap"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700;800&family=DM+Sans:wght@400;500&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      html,
+      body {
+        margin: 0;
+        background: #0a0e1a;
+        color: #e8ecf5;
+      }
+      body.is-booting {
+        overflow: hidden;
+      }
+      #vf-boot {
+        position: fixed;
+        inset: 0;
+        z-index: 10000;
+        display: grid;
+        place-items: center;
+        background:
+          radial-gradient(ellipse 80% 60% at 50% 40%, #10162a 0%, #0a0e1a 70%),
+          #0a0e1a;
+      }
+      #vf-boot .vf-boot-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.75rem;
+        padding: 1.5rem;
+        text-align: center;
+      }
+      #vf-boot .vf-boot-mark {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.75rem;
+      }
+      #vf-boot .vf-boot-hex {
+        width: 36px;
+        height: 36px;
+        flex-shrink: 0;
+      }
+      #vf-boot .vf-boot-word {
+        font-family: 'Space Grotesk', 'Segoe UI', system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 1.35rem;
+        letter-spacing: -0.02em;
+        line-height: 1;
+      }
+      #vf-boot .vf-boot-word .accent {
+        color: #5b8bff;
+      }
+      #vf-boot .vf-boot-runway {
+        position: relative;
+        width: min(280px, 72vw);
+        height: 104px;
+        overflow: hidden;
+      }
+      #vf-boot .vf-boot-ground {
+        position: absolute;
+        left: -50%;
+        right: -50%;
+        bottom: 8px;
+        height: 2px;
+        background: repeating-linear-gradient(
+          90deg,
+          #2f6fed 0 10px,
+          transparent 10px 20px
+        );
+        opacity: 0.85;
+        animation: vf-ground-scroll 0.9s linear infinite;
+      }
+      #vf-boot .vf-boot-stick {
+        position: absolute;
+        bottom: 8px;
+        left: 50%;
+        width: 72px;
+        height: 92px;
+        margin-left: -36px;
+      }
+      #vf-boot .vf-boot-stick svg {
+        width: 100%;
+        height: 100%;
+        overflow: visible;
+        display: block;
+      }
+      #vf-boot .vf-figure {
+        transform-box: fill-box;
+        transform-origin: 50% 100%;
+        animation: vf-walk-bob 0.9s ease-in-out infinite;
+      }
+      #vf-boot .vf-torso {
+        transform-box: fill-box;
+        transform-origin: 0 0;
+        animation: vf-torso-sway 0.9s ease-in-out infinite;
+      }
+      #vf-boot .vf-hip-back,
+      #vf-boot .vf-hip-front,
+      #vf-boot .vf-knee-back,
+      #vf-boot .vf-knee-front,
+      #vf-boot .vf-shoulder-back,
+      #vf-boot .vf-shoulder-front,
+      #vf-boot .vf-elbow-back,
+      #vf-boot .vf-elbow-front {
+        transform-box: fill-box;
+        transform-origin: 0 0;
+      }
+      #vf-boot .vf-hip-back {
+        animation: vf-thigh 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+      }
+      #vf-boot .vf-hip-front {
+        animation: vf-thigh 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        animation-delay: -0.45s;
+      }
+      #vf-boot .vf-knee-back {
+        animation: vf-shin 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+      }
+      #vf-boot .vf-knee-front {
+        animation: vf-shin 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        animation-delay: -0.45s;
+      }
+      #vf-boot .vf-shoulder-back {
+        animation: vf-upper-arm 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        animation-delay: -0.45s;
+      }
+      #vf-boot .vf-shoulder-front {
+        animation: vf-upper-arm 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+      }
+      #vf-boot .vf-elbow-back {
+        animation: vf-forearm 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        animation-delay: -0.45s;
+      }
+      #vf-boot .vf-elbow-front {
+        animation: vf-forearm 0.9s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+      }
+      #vf-boot .vf-boot-status {
+        font-family: 'Space Mono', ui-monospace, monospace;
+        font-size: 0.68rem;
+        letter-spacing: 0.22em;
+        text-transform: uppercase;
+        color: #5a6382;
+      }
+      @keyframes vf-ground-scroll {
+        from {
+          transform: translateX(0);
+        }
+        to {
+          transform: translateX(-20px);
+        }
+      }
+      @keyframes vf-walk-bob {
+        0%,
+        50%,
+        100% {
+          transform: translateY(0);
+        }
+        25%,
+        75% {
+          transform: translateY(-2.5px);
+        }
+      }
+      @keyframes vf-torso-sway {
+        0%,
+        100% {
+          transform: rotate(-2deg);
+        }
+        50% {
+          transform: rotate(2deg);
+        }
+      }
+      @keyframes vf-thigh {
+        0% {
+          transform: rotate(-24deg);
+        }
+        18% {
+          transform: rotate(-10deg);
+        }
+        38% {
+          transform: rotate(6deg);
+        }
+        52% {
+          transform: rotate(22deg);
+        }
+        68% {
+          transform: rotate(4deg);
+        }
+        84% {
+          transform: rotate(-16deg);
+        }
+        100% {
+          transform: rotate(-24deg);
+        }
+      }
+      @keyframes vf-shin {
+        0% {
+          transform: rotate(-4deg);
+        }
+        16% {
+          transform: rotate(-2deg);
+        }
+        38% {
+          transform: rotate(8deg);
+        }
+        52% {
+          transform: rotate(14deg);
+        }
+        68% {
+          transform: rotate(52deg);
+        }
+        84% {
+          transform: rotate(26deg);
+        }
+        100% {
+          transform: rotate(-4deg);
+        }
+      }
+      @keyframes vf-upper-arm {
+        0% {
+          transform: rotate(20deg);
+        }
+        25% {
+          transform: rotate(8deg);
+        }
+        50% {
+          transform: rotate(-22deg);
+        }
+        75% {
+          transform: rotate(-6deg);
+        }
+        100% {
+          transform: rotate(20deg);
+        }
+      }
+      @keyframes vf-forearm {
+        0% {
+          transform: rotate(-28deg);
+        }
+        50% {
+          transform: rotate(-18deg);
+        }
+        100% {
+          transform: rotate(-28deg);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #vf-boot .vf-boot-ground,
+        #vf-boot .vf-figure,
+        #vf-boot .vf-torso,
+        #vf-boot .vf-hip-back,
+        #vf-boot .vf-hip-front,
+        #vf-boot .vf-knee-back,
+        #vf-boot .vf-knee-front,
+        #vf-boot .vf-shoulder-back,
+        #vf-boot .vf-shoulder-front,
+        #vf-boot .vf-elbow-back,
+        #vf-boot .vf-elbow-front {
+          animation: none;
+        }
+      }
+    </style>
+    <script type="module" crossorigin src="/visionforge-portfoliowebsite/assets/index-CZOe_Tic.js"></script>
+    <link rel="modulepreload" crossorigin href="/visionforge-portfoliowebsite/assets/rolldown-runtime-CNC7AqOf.js">
+    <link rel="stylesheet" crossorigin href="/visionforge-portfoliowebsite/assets/index-Bz77qnze.css">
+  </head>
+  <body class="is-booting">
+    <div id="vf-boot" role="status" aria-live="polite" aria-busy="true" aria-label="Loading Vision Forge">
+      <div class="vf-boot-inner">
+        <div class="vf-boot-mark">
+          <svg class="vf-boot-hex" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+            <path
+              d="M20 2 36 11.4V28.6L20 38 4 28.6V11.4L20 2Z"
+              stroke="#5B8BFF"
+              stroke-width="2"
+            />
+            <path
+              d="M20 8 30 13.7V25.3L20 31 10 25.3V13.7L20 8Z"
+              stroke="#5A6382"
+              stroke-width="1"
+              opacity="0.5"
+            />
+            <path d="M22.5 12 15 22h6l-3.5 8L26 18h-6l2.5-6Z" fill="#F5B700" />
+          </svg>
+          <span class="vf-boot-word">VISION <span class="accent">FORGE</span></span>
+        </div>
+
+        <div class="vf-boot-runway" aria-hidden="true">
+          <div class="vf-boot-ground"></div>
+          <div class="vf-boot-stick">
+            <svg viewBox="0 0 72 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <g class="vf-figure">
+                <!-- BACK LEG: hip → knee → foot -->
+                <g transform="translate(36 52)">
+                  <g class="vf-hip-back">
+                    <line
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="14"
+                      stroke="#2F6FED"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                    />
+                    <g transform="translate(0 14)">
+                      <g class="vf-knee-back">
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="12"
+                          stroke="#2F6FED"
+                          stroke-width="2.4"
+                          stroke-linecap="round"
+                        />
+                        <line
+                          x1="0"
+                          y1="12"
+                          x2="8"
+                          y2="12"
+                          stroke="#2F6FED"
+                          stroke-width="2.4"
+                          stroke-linecap="round"
+                        />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+
+                <!-- BACK ARM: shoulder → elbow -->
+                <g transform="translate(36 34)">
+                  <g class="vf-shoulder-back">
+                    <line
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="12"
+                      stroke="#2F6FED"
+                      stroke-width="2.4"
+                      stroke-linecap="round"
+                    />
+                    <g transform="translate(0 12)">
+                      <g class="vf-elbow-back">
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="10"
+                          stroke="#2F6FED"
+                          stroke-width="2.4"
+                          stroke-linecap="round"
+                        />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+
+                <!-- TORSO + HEAD + HAT (outer translate stays; CSS only rotates inner) -->
+                <g transform="translate(36 52)">
+                  <g class="vf-torso">
+                    <line
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="-20"
+                      stroke="#2F6FED"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    />
+                    <circle cx="0" cy="-28" r="7" fill="#0A0E1A" stroke="#2F6FED" stroke-width="2" />
+                    <path d="M-8 -31 A8 7 0 0 1 8 -31 Z" fill="#F5B700" />
+                    <rect x="-10" y="-32" width="20" height="2.4" rx="1.2" fill="#F5B700" />
+                    <circle cx="0" cy="-33.5" r="1.2" fill="#0A0E1A" />
+                  </g>
+                </g>
+
+                <!-- FRONT LEG -->
+                <g transform="translate(36 52)">
+                  <g class="vf-hip-front">
+                    <line
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="14"
+                      stroke="#5B8BFF"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    />
+                    <g transform="translate(0 14)">
+                      <g class="vf-knee-front">
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="12"
+                          stroke="#5B8BFF"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                        />
+                        <line
+                          x1="0"
+                          y1="12"
+                          x2="8"
+                          y2="12"
+                          stroke="#5B8BFF"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                        />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+
+                <!-- FRONT ARM -->
+                <g transform="translate(36 34)">
+                  <g class="vf-shoulder-front">
+                    <line
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="12"
+                      stroke="#5B8BFF"
+                      stroke-width="2.5"
+                      stroke-linecap="round"
+                    />
+                    <g transform="translate(0 12)">
+                      <g class="vf-elbow-front">
+                        <line
+                          x1="0"
+                          y1="0"
+                          x2="0"
+                          y2="10"
+                          stroke="#5B8BFF"
+                          stroke-width="2.5"
+                          stroke-linecap="round"
+                        />
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <p class="vf-boot-status">Forging experience</p>
+      </div>
+    </div>
+
+    <div id="root"></div>
+  </body>
+</html>
