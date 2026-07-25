@@ -3,16 +3,39 @@
 export const WHATSAPP_NUMBER = '5016157575'
 
 export const HOSTING_OPTIONS = [
-  { value: 25, label: 'Basic Hosting: $25/mo' },
-  { value: 45, label: 'Business Hosting: $45/mo' },
-  { value: 60, label: 'Ecommerce/App Hosting: $60/mo' },
+  { value: 35, label: 'Basic Hosting: $35/mo' },
+  { value: 60, label: 'Business Hosting: $60/mo' },
+  { value: 100, label: 'Ecommerce/App Hosting: $100/mo' },
 ]
 
 export const CARE_OPTIONS = [
-  { value: 0, label: 'Self Managed: $0/mo' },
-  { value: 60, label: 'Basic Care: $60/mo' },
-  { value: 150, label: 'Standard Care: $150/mo' },
-  { value: 300, label: 'Premium Care: $300/mo' },
+  {
+    id: 'self',
+    value: 0,
+    name: 'Self Managed',
+    label: 'Self Managed: $0/mo',
+  },
+  {
+    id: 'basic',
+    value: 60,
+    name: 'Basic Care',
+    label: 'Basic Care: $60/mo',
+    info: 'Core upkeep: software updates, uptime monitoring, and monthly backups so your site stays secure and recoverable.',
+  },
+  {
+    id: 'standard',
+    value: 150,
+    name: 'Standard Care',
+    label: 'Standard Care: $150/mo',
+    info: 'Everything in Basic, plus light content edits, plugin and theme maintenance, and priority support when something breaks.',
+  },
+  {
+    id: 'premium',
+    value: 300,
+    name: 'Premium Care',
+    label: 'Premium Care: $300/mo',
+    info: 'Full hands on care: unlimited small content updates, performance checks, security hardening, and a dedicated support channel.',
+  },
 ]
 
 export const SERVICES = [

@@ -143,9 +143,11 @@ function TierCard({
       <div className="mb-2.5 font-display text-[17px] font-bold text-blue">
         {tier.priceLabel}
       </div>
-      <ul className="m-0 list-disc pl-4 text-[12.5px] leading-[1.7] text-mist">
+      <ul className="m-0 list-disc break-words pl-4 text-[12.5px] leading-[1.7] text-mist">
         {tier.bullets.map((b) => (
-          <li key={b}>{b}</li>
+          <li key={b} className="break-words">
+            {b}
+          </li>
         ))}
       </ul>
     </div>
@@ -202,6 +204,36 @@ function AddonRow({
   )
 }
 
+function joinList(items) {
+  if (items.length === 0) return ''
+  if (items.length === 1) return items[0]
+  if (items.length === 2) return `${items[0]} and ${items[1]}`
+  return `${items.slice(0, -1).join(', ')}, and ${items[items.length - 1]}`
+}
+
+function buildPackageSummary({ service, tier, selectedAddons, hosting, care }) {
+  if (!tier) return ''
+
+  const tierLabel = tier.displayName || tier.name
+  const addonNames = selectedAddons.map((a) => a.name)
+
+  let summary = `You're getting the ${tierLabel} package`
+  if (addonNames.length) {
+    summary += ` with ${joinList(addonNames)}`
+  }
+  summary += '.'
+
+  if (service.hasMonthly) {
+    const hostingOpt = HOSTING_OPTIONS.find((o) => o.value === hosting)
+    const careOpt = CARE_OPTIONS.find((o) => o.value === care)
+    const hostingName = hostingOpt?.label?.replace(/:.*$/, '') || 'hosting'
+    const careName = careOpt?.name || 'care'
+    summary += ` Monthly: ${hostingName} and ${careName}.`
+  }
+
+  return summary
+}
+
 function EstimatePanel({
   service,
   tier,
@@ -212,15 +244,51 @@ function EstimatePanel({
   setCare,
   onQuote,
 }) {
+  const [activeInfoId, setActiveInfoId] = useState(null)
+
+  const careInfos = useMemo(() => {
+    const map = {}
+    CARE_OPTIONS.forEach((o) => {
+      if (o.info) map[`care-${o.id}`] = o.info
+    })
+    return map
+  }, [])
+
+  useEffect(() => {
+    if (!service.hasMonthly) return
+    const close = () => setActiveInfoId(null)
+    document.addEventListener('click', close)
+    window.addEventListener('scroll', close, true)
+    window.addEventListener('resize', close)
+    return () => {
+      document.removeEventListener('click', close)
+      window.removeEventListener('scroll', close, true)
+      window.removeEventListener('resize', close)
+    }
+  }, [service.hasMonthly])
+
   const total = useMemo(() => {
     const addonsSum = selectedAddons.reduce((s, a) => s + a.price, 0)
     return (tier?.price || 0) + addonsSum
   }, [tier, selectedAddons])
 
   const monthlyTotal = Number(hosting) + Number(care)
+  const firstMonthTotal = total + (service.hasMonthly ? monthlyTotal : 0)
+
+  const packageSummary = useMemo(
+    () =>
+      buildPackageSummary({
+        service,
+        tier,
+        selectedAddons,
+        hosting,
+        care,
+      }),
+    [service, tier, selectedAddons, hosting, care]
+  )
 
   return (
-    <aside className="sticky top-[88px] self-start rounded-2xl border border-line bg-[#141A30] p-[22px]">
+    <aside className="mx-auto w-full max-w-[480px] rounded-2xl border border-line bg-[#141A30] p-[22px]">
       <h4 className="mb-3.5 font-display text-sm font-semibold tracking-[0.5px] text-mist uppercase">
         Your Estimate
       </h4>
@@ -245,13 +313,6 @@ function EstimatePanel({
           </div>
         ))}
       </div>
-      <div className="mt-4 flex items-baseline justify-between border-t border-line pt-3.5">
-        <span className="text-[13px] text-mist">Estimated Total</span>
-        <span className="font-display text-[26px] font-bold text-yellow">
-          ${total.toLocaleString()} BZD
-        </span>
-      </div>
-      <p className="mt-2.5 text-[11px] leading-relaxed text-mist">{service.note}</p>
 
       {service.hasMonthly ? (
         <div className="mt-5 border-t border-line pt-[18px]">
@@ -259,7 +320,7 @@ function EstimatePanel({
             Monthly (separate from build price)
           </h5>
           <select
-            className="mb-2 w-full rounded-lg border border-line bg-[#10152A] px-2.5 py-2 font-body text-[13px] text-paper"
+            className="mb-3 w-full rounded-lg border border-line bg-[#10152A] px-2.5 py-2 font-body text-[13px] text-paper"
             value={hosting}
             onChange={(e) => setHosting(Number(e.target.value))}
           >
@@ -269,23 +330,99 @@ function EstimatePanel({
               </option>
             ))}
           </select>
-          <select
-            className="mb-2 w-full rounded-lg border border-line bg-[#10152A] px-2.5 py-2 font-body text-[13px] text-paper"
-            value={care}
-            onChange={(e) => setCare(Number(e.target.value))}
-          >
-            {CARE_OPTIONS.map((o) => (
-              <option key={o.value} value={o.value}>
-                {o.label}
-              </option>
-            ))}
-          </select>
-          <div className="mt-1 flex justify-between text-[12.5px] text-mist">
-            <span>Monthly total</span>
-            <span className="font-semibold text-blue">${monthlyTotal} BZD/mo</span>
+
+          <p className="mb-2 text-[12.5px] tracking-[0.4px] text-mist uppercase">
+            Care plan
+          </p>
+          <div className="flex flex-col gap-2" role="radiogroup" aria-label="Care plan">
+            {CARE_OPTIONS.map((o) => {
+              const selected = care === o.value
+              return (
+                <div
+                  key={o.id}
+                  role="radio"
+                  aria-checked={selected}
+                  tabIndex={0}
+                  onClick={() => setCare(o.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      setCare(o.value)
+                    }
+                  }}
+                  className={`flex cursor-pointer items-center justify-between gap-2 rounded-[10px] border bg-[#10152A] px-3 py-2.5 text-[13px] ${
+                    selected ? 'border-blue' : 'border-line hover:border-[#33406b]'
+                  }`}
+                >
+                  <span className="flex min-w-0 items-center gap-2 text-left text-paper">
+                    <span
+                      className={`h-3.5 w-3.5 shrink-0 rounded-full border-2 ${
+                        selected
+                          ? 'border-blue bg-[radial-gradient(circle,#2F6FED_0_40%,transparent_42%)]'
+                          : 'border-line'
+                      }`}
+                      aria-hidden="true"
+                    />
+                    <span>{o.name}</span>
+                    {o.info ? (
+                      <InfoIcon
+                        id={`care-${o.id}`}
+                        info={o.info}
+                        activeId={activeInfoId}
+                        setActiveId={setActiveInfoId}
+                      />
+                    ) : null}
+                  </span>
+                  <span className="shrink-0 whitespace-nowrap text-[12.5px] text-mist">
+                    ${o.value}/mo
+                  </span>
+                </div>
+              )
+            })}
           </div>
+          <InfoTooltip activeId={activeInfoId} infos={careInfos} />
         </div>
       ) : null}
+
+      <div className="mt-4 border-t border-line pt-3.5">
+        <span className="text-[13px] text-mist">Estimated Total</span>
+        <div className="mt-2 flex items-baseline justify-between gap-3">
+          <span className="text-[12.5px] text-mist">Build</span>
+          <span className="font-display text-lg font-semibold text-paper">
+            ${total.toLocaleString()} BZD
+          </span>
+        </div>
+        {service.hasMonthly ? (
+          <div className="mt-1.5 flex items-baseline justify-between gap-3">
+            <span className="text-[12.5px] text-mist">Monthly</span>
+            <span className="font-display text-lg font-semibold text-blue">
+              ${monthlyTotal.toLocaleString()} BZD/mo
+            </span>
+          </div>
+        ) : null}
+        <div className="mt-3 flex items-baseline justify-between gap-3 border-t border-dashed border-line pt-3">
+          <span className="text-[13px] font-medium text-paper">
+            {service.hasMonthly ? 'First month' : 'Total'}
+          </span>
+          <span className="font-display text-[26px] font-bold text-yellow">
+            ${firstMonthTotal.toLocaleString()} BZD
+          </span>
+        </div>
+        {service.hasMonthly ? (
+          <p className="mt-2 text-right text-[12.5px] text-mist">
+            Then ${monthlyTotal.toLocaleString()} BZD/mo after
+          </p>
+        ) : null}
+        {packageSummary ? (
+          <p className="mt-3 rounded-[10px] border border-line bg-[#10152A] px-3 py-2.5 text-[12.5px] leading-relaxed text-mist">
+            <span className="mb-1 block text-[11px] font-semibold tracking-[0.4px] text-yellow uppercase">
+              Package summary
+            </span>
+            <span className="text-paper">{packageSummary}</span>
+          </p>
+        ) : null}
+      </div>
+      <p className="mt-2.5 text-[11px] leading-relaxed text-mist">{service.note}</p>
 
       <button
         type="button"
@@ -305,7 +442,7 @@ function EstimatePanel({
 function BuilderPanel({ service }) {
   const [tierId, setTierId] = useState(service.defaultTierId)
   const [addonIds, setAddonIds] = useState(() => new Set())
-  const [hosting, setHosting] = useState(25)
+  const [hosting, setHosting] = useState(35)
   const [care, setCare] = useState(0)
   const [activeInfoId, setActiveInfoId] = useState(null)
 
@@ -367,7 +504,7 @@ function BuilderPanel({ service }) {
         : 'grid grid-cols-1 gap-3.5 sm:grid-cols-2 lg:grid-cols-3'
 
   return (
-    <div className="mx-auto grid max-w-[1080px] grid-cols-1 gap-8 px-[max(1.25rem,env(safe-area-inset-left))] pb-20 sm:px-6 lg:grid-cols-[1fr_320px] lg:gap-[34px] lg:px-8">
+    <div className="mx-auto grid max-w-[1080px] grid-cols-1 gap-8 px-[max(1.25rem,env(safe-area-inset-left))] pb-20 sm:px-6 lg:px-8">
       <div>
         <div className="mt-2 mb-4 flex items-center gap-2.5">
           <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[rgba(47,111,237,0.12)] text-[12.5px] font-bold text-blue">

@@ -41,7 +41,6 @@ export default function ConsultationConsole() {
       <div className="container-vf">
         <Reveal as="div" className="cc-layout">
           <div className="cc-copy">
-            <p className="cc-kicker">SOLUTIONS THAT WORK. RESULTS THAT MATTER.</p>
             <h2 className="cc-headline">Budget-friendly. No obligation. Just a conversation.</h2>
             <p className="cc-body">
               Great digital work shouldn&apos;t be out of reach. We scope every project around what

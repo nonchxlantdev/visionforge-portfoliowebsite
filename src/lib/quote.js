@@ -14,10 +14,13 @@ export function buildWhatsAppMessage(serviceName, est, clientNote) {
   }
   lines.push(`Estimated Total: $${est.total.toLocaleString()} BZD`)
   if (est.hostingLabel) {
+    const firstMonth = est.total + est.monthlyTotal
     lines.push('')
     lines.push(
       `Monthly: ${est.hostingLabel} + ${est.careLabel} ($${est.monthlyTotal} BZD/mo)`
     )
+    lines.push(`First month: $${firstMonth.toLocaleString()} BZD`)
+    lines.push(`Then: $${est.monthlyTotal} BZD/mo after`)
   }
   lines.push('')
   lines.push('My name:')
@@ -88,6 +91,19 @@ export async function generateQuotePDF(serviceName, est) {
     y += 7
     doc.text(`${est.hostingLabel}  +  ${est.careLabel}`, 14, y)
     doc.text(`$${est.monthlyTotal} BZD/mo`, 196, y, { align: 'right' })
+    y += 10
+    const firstMonth = est.total + est.monthlyTotal
+    doc.setFont('helvetica', 'bold')
+    doc.text('First month', 14, y)
+    doc.setTextColor(47, 111, 237)
+    doc.text(`$${firstMonth.toLocaleString()} BZD`, 196, y, { align: 'right' })
+    doc.setTextColor(10, 14, 26)
+    y += 7
+    doc.setFont('helvetica', 'normal')
+    doc.setFontSize(10)
+    doc.setTextColor(90, 90, 90)
+    doc.text(`Then $${est.monthlyTotal} BZD/mo after`, 14, y)
+    doc.setTextColor(10, 14, 26)
     y += 10
   }
 
